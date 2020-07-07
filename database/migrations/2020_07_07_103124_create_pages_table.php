@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreatePagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,22 +16,20 @@ class CreateUsersTable extends Migration
         /*
         - id
         - name
-        - email
-        - privilege
-        - account_verified_at
-        - password
-        - remember_token
+        - url
+        - user_id (FK: users)
+        - is_enabled (0 = 404)
+        - is_locked (1 = modal saying that it's closed)
         - created_at
         - updated_at
         */
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->enum('privilege', ['user', 'admin', 'seller']);
-            $table->timestamp('account_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('url');
+            $table->bigInteger('user_id');
+            $table->boolean('is_enabled');
+            $table->boolean('is_locked');
             $table->timestamps();
         });
     }
@@ -43,6 +41,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('pages');
     }
 }
